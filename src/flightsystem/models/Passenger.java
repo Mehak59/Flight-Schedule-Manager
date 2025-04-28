@@ -5,5 +5,7 @@ public class Passenger {
     private String FirstName;
     private String LastName;
     private int PhoneNo;
+    private String Email;
+    private String Nationality;
 
 }

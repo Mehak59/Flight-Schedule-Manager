@@ -1,15 +1,15 @@
 package flightsystem.models;
 
 public class Booking {
-    private int BookingID;
-    private int FlightID;
-    private int PassengerID;
-    private String BookingDate;
-    private int SeatNumber;
-    private String TravelClass;
-    private double Price;
-    private String PaymentStatus;
-    private String CheckInStatus;
-    private String CheckInTime;
+    private int bookingID;
+    private int flightID;
+    private int passengerID;
+    private String bookingDate;
+    private int seatNumber;
+    private String travelClass;
+    private double price;
+    private String paymentStatus;
+    private String checkInStatus;
+    private String checkInTime;
 
 }

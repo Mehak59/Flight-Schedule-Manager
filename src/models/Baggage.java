@@ -1,4 +1,4 @@
-package flightsystem.models;
+package models;
 
 public class Baggage {
     private int baggageId;

@@ -1,4 +1,4 @@
-package flightsystem.models;
+package models;
 
 public class Airport {
     private int airportID;

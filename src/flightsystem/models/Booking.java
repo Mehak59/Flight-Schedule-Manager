@@ -90,7 +90,7 @@ public void setPaymentStatus(String paymentStatus){
 }
 
 public String getCheckInStatus(){
-    return paymentStatus;
+    return checkInStatus;
 }
 
 public void setCheckInStatus(String checkInStatus){

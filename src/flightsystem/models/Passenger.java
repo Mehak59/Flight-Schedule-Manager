@@ -5,11 +5,12 @@ public class Passenger {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
-    private int phoneNo;
+    private String phoneNo;
     private String email;
     private String nationality;
 
-    public Passenger(int passengerId, String firstName, String lastName, String dateOfBirth, int phoneNo, String email,
+    public Passenger(int passengerId, String firstName, String lastName, String dateOfBirth, String phoneNo,
+            String email,
             String nationality) {
         this.passengerId = passengerId;
         this.firstName = firstName;
@@ -52,11 +53,11 @@ public class Passenger {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getPhoneNo() {
+    public String getPhoneNo() {
         return phoneNo;
     }
 
-    public void setPhoneNo(int phoneNo) {
+    public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
 

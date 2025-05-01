@@ -44,7 +44,7 @@ public class Login {
                                 nationality);
                     }
                 }
-                return null;
+
             }
         } catch (IOException e) {
             System.out.println("Error reading user file: " + e.getMessage());

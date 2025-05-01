@@ -107,14 +107,18 @@ public class Register {
 
     public boolean userExists(String email) {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
-            while (reader.readLine() != null) {
-                String[] details = reader.readLine().split(",");
-                if (details.length > 5 && details[5] == email) {
-                    return true;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] details = line.split(",");
+                if (details.length == 8) {
+                    String storedEmail = details[5];
+                    if (storedEmail.equals(email)) {
+                        return true;
+                    }
                 }
             }
         } catch (IOException e) {
-
+            System.out.println("Error reading user file: " + e.getMessage());
         }
         return false;
     }

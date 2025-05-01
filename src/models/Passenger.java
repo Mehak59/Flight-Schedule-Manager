@@ -1,7 +1,7 @@
 package models;
 
 public class Passenger {
-    private int passengerId;
+    private String passengerId;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -9,7 +9,7 @@ public class Passenger {
     private String email;
     private String nationality;
 
-    public Passenger(int passengerId, String firstName, String lastName, String dateOfBirth, String phoneNo,
+    public Passenger(String passengerId, String firstName, String lastName, String dateOfBirth, String phoneNo,
             String email,
             String nationality) {
         this.passengerId = passengerId;
@@ -21,11 +21,11 @@ public class Passenger {
         this.nationality = nationality;
     }
 
-    public int getPassengerId() {
+    public String getPassengerId() {
         return passengerId;
     }
 
-    public void setPassengerId(int passengerId) {
+    public void setPassengerId(String passengerId) {
         this.passengerId = passengerId;
     }
 

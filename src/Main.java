@@ -11,32 +11,32 @@ public class Main {
         Login login = new Login(scanner);
         boolean flag = true;
         welcomeMessage();
-        // while (flag) {
-        //     System.out.println("=== Menu ===");
-        //     System.out.println("1. Register");
-        //     System.out.println("2. Login");
-        //     System.out.println("3. Exit");
-        //     System.out.print("Enter your choice: ");
+        while (flag) {
+            System.out.println("=== Menu ===");
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
 
-        //     String choice = scanner.nextLine();
+            String choice = scanner.nextLine();
 
-        //     switch (choice) {
-        //         case "1":
-        //             register.register();
-        //             break;
-        //         case "2":
-        //             login.login();
-        //             break;
-        //         case "3":
-        //             System.out.println("Exiting from the program.Goodbye!");
-        //             flag=false;
-        //             break;
-        //         default:
-        //             System.out.println("Invalid choice. Please enter 1, 2, or 3.");
-        //     }
+            switch (choice) {
+                case "1":
+                    register.register();
+                    break;
+                case "2":
+                    login.login();
+                    break;
+                case "3":
+                    System.out.println("Exiting from the program.Goodbye!");
+                    flag=false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+            }
             System.out.println();
             showServices(scanner);
-        //}
+        }
     }
 
     private static void welcomeMessage()

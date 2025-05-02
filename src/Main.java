@@ -37,7 +37,7 @@ public class Main {
             showServices(scanner);
         }
     }
-    
+
     private static void welcomeMessage()
     {
       System.out.println("\n**************************");
@@ -54,9 +54,9 @@ public class Main {
             System.out.println("1. View Flights");
             System.out.println("2. Manage Bookings");
             System.out.println("3. Check-in");
-            System.out.println("4. Notification Settings");
+            System.out.println("4. Notifications");
             System.out.println("5. Profile Settings");
-            System.out.println("6. Logout");
+            System.out.println("6. Go Back");
             System.out.print("Enter your choice: ");
 
             String choice = scanner.nextLine();
@@ -72,14 +72,13 @@ public class Main {
                    // checkIn();
                     break;
                 case "4":
-                   // notificationSettings();
+                   // notifications();
                     break;
                 case "5":
                     //profileSettings();
                     break;
                 case "6":
-                   // System.out.println("Logging out...");
-                    //keepRunning = false;
+                    keepRunning = false;
                     break;
                 default:
                    System.out.println("Invalid choice. Please enter a number between 1 and 6.");

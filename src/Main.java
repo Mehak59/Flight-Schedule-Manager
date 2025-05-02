@@ -34,8 +34,10 @@ public class Main {
                     System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
             System.out.println();
+            showServices(scanner);
         }
     }
+    
     private static void welcomeMessage()
     {
       System.out.println("\n**************************");
@@ -43,5 +45,46 @@ public class Main {
       System.out.println("Manage your flights, bookings, and check-ins with ease.");
       System.out.println("Please choose an option: Register, Login, or Exit.");
       System.out.println("**************************\n");
+    }
+
+    private static void showServices(Scanner scanner) {
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("=== Available Services ===");
+            System.out.println("1. View Flights");
+            System.out.println("2. Manage Bookings");
+            System.out.println("3. Check-in");
+            System.out.println("4. Notification Settings");
+            System.out.println("5. Profile Settings");
+            System.out.println("6. Logout");
+            System.out.print("Enter your choice: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                   // viewFlights();
+                    break;
+                case "2":
+                   // manageBookings();
+                    break;
+                case "3":
+                   // checkIn();
+                    break;
+                case "4":
+                   // notificationSettings();
+                    break;
+                case "5":
+                    //profileSettings();
+                    break;
+                case "6":
+                   // System.out.println("Logging out...");
+                    //keepRunning = false;
+                    break;
+                default:
+                   System.out.println("Invalid choice. Please enter a number between 1 and 6.");
+            }
+            System.out.println();
+        }
     }
 }

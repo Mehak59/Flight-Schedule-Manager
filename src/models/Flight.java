@@ -1,98 +1,98 @@
 package models;
 
+import java.time.LocalDate;
+
 public class Flight {
     private int flightId;
-    private int flightNumber;
-    private String departureAirport;
-    private String arrivalAirport;
+    private LocalDate flightDate;
+    private String from;
+    private String to;
     private String departureTime;
     private String arrivalTime;
-    private int duration; 
-    private String status;
-    private String schedules;
-    public Flight(int flightId, int flightNumber, String departureAirport, String arrivalAirport, 
-                String departureTime, String arrivalTime, int duration, String status, String schedules)
-        {
+    private int duration;  
+    private double priceEconomy;
+    private double priceBusiness;
+    private double priceFirst;
+    private int stops;
+    private String layoverTime;
+
+    public Flight(int flightId, LocalDate flightDate, String from, String to, String departureTime, String arrivalTime, 
+                  int duration, double priceEconomy, double priceBusiness, double priceFirst, 
+                  int stops, String layoverTime) {
         this.flightId = flightId;
-        this.flightNumber = flightNumber;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
+        this.flightDate = flightDate;
+        this.from = from;
+        this.to = to;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.duration = duration;
-        this.status = status;
-        this.schedules = schedules;
+        this.priceEconomy = priceEconomy;
+        this.priceBusiness = priceBusiness;
+        this.priceFirst = priceFirst;
+        this.stops = stops;
+        this.layoverTime = layoverTime;
     }
 
     public int getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(int flightId) {
-        this.flightId = flightId;
+    public LocalDate getFlightDate() {
+        return flightDate;
     }
 
-    public int getFlightNumber() {
-        return flightNumber;
+    public String getFrom() {
+        return from;
     }
 
-    public void setFlightNumber(int flightNumber) {
-        this.flightNumber = flightNumber;
-    }
-
-    public String getDepartureAirport() {
-        return departureAirport;
-    }
-
-    public void setDepartureAirport(String departureAirport) {
-        this.departureAirport = departureAirport;
-    }
-
-    public String getArrivalAirport() {
-        return arrivalAirport;
-    }
-
-    public void setArrivalAirport(String arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
+    public String getTo() {
+        return to;
     }
 
     public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
-        this.departureTime = departureTime;
-    }
-
     public String getArrivalTime() {
         return arrivalTime;
-    }
-
-    public void setArrivalTime(String arrivalTime) {
-        this.arrivalTime = arrivalTime;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public double getPriceEconomy() {
+        return priceEconomy;
     }
 
-    public String getStatus() {
-        return status;
+    public double getPriceBusiness() {
+        return priceBusiness;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public double getPriceFirst() {
+        return priceFirst;
     }
 
-    public String getSchedules() {
-        return schedules;
+    public int getStops() {
+        return stops;
     }
 
-    public void setSchedules(String schedules) {
-        this.schedules = schedules;
+    public String getLayoverTime() {
+        return layoverTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Flight ID: " + flightId +
+                " | From: " + from +
+                " | To: " + to +
+                " | Departure Time: " + departureTime +
+                " | Arrival Time: " + arrivalTime +
+                " | Duration: " + duration + " mins" +
+                " | Economy Price: ₹" + priceEconomy +
+                " | Business Price: ₹" + priceBusiness +
+                " | First Class Price: ₹" + priceFirst +
+                " | Stops: " + stops +
+                " | Layover Time: " + layoverTime;
     }
 }

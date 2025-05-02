@@ -25,6 +25,7 @@ public class Main {
                     break;
                 case "2":
                     login.login();
+                    showServices(scanner);
                     break;
                 case "3":
                     System.out.println("Exiting from the program.Goodbye!");
@@ -34,7 +35,6 @@ public class Main {
                     System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
             System.out.println();
-            showServices(scanner);
         }
     }
 
@@ -63,19 +63,14 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                   // viewFlights();
                     break;
                 case "2":
-                   // manageBookings();
                     break;
                 case "3":
-                   // checkIn();
                     break;
                 case "4":
-                   // notifications();
                     break;
                 case "5":
-                    //profileSettings();
                     break;
                 case "6":
                     keepRunning = false;

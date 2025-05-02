@@ -24,6 +24,10 @@ public class Login {
             return null;
         }
         String hashedInputPassword = hashPassword(password);
+        if (hashedInputPassword == null) {
+            System.out.println("Error hashing password.");
+            return null;
+        }
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
 
             String line;
@@ -53,24 +57,26 @@ public class Login {
         return null;
     }
 
-    public void login() {
+    public Passenger login() {
         ForgotPassword forgot = new ForgotPassword(scanner);
         System.out.println("Enter email:");
         String email = scanner.nextLine();
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
             System.out.println("Invalid email format.");
-            return;
+            return null;
         }
         System.out.println("Enter password:");
         String password = scanner.nextLine();
         if (password.length() < 8) {
             System.out.println("Password must be at least 8 characters long.");
-            return;
+            return null;
         }
         Passenger logPassenger = loginUser(email, password);
         if (logPassenger != null) {
             System.out.println("Welcome, " + logPassenger.getFirstName() + " " + logPassenger.getLastName() + "!");
-        } else {
+            return logPassenger;
+        } 
+        else {
             System.out.println("\nLogin failed.");
             System.out.println("1. Retry Login");
             System.out.println("2. Forgot Password");
@@ -81,18 +87,18 @@ public class Login {
 
             switch (choice) {
                 case "1":
-                    login();
-                    break;
+                    return login();
                 case "2":
                     forgot.forgot();
                     break;
                 case "3":
-                    return;
+                    return null;
                 default:
                     System.out.println("Invalid choice. Returning to main menu.");
-                    return;
+                    return null;
             }
         }
+        return null;
     }
 
     private String hashPassword(String password) {

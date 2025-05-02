@@ -1,10 +1,14 @@
 import java.util.Scanner;
 
 import auth.Register;
+import models.Passenger;
+import services.ProfileSettings;
 import auth.Login;
 
 public class Main {
-    public static void main(String[] args) {
+    private static Passenger loggedInPassenger = null;
+
+    public static void main(String[] args) {  
         Scanner scanner = new Scanner(System.in);
         Register register = new Register(scanner);
         Login login = new Login(scanner);
@@ -24,7 +28,7 @@ public class Main {
                     register.register();
                     break;
                 case "2":
-                    login.login();
+                loggedInPassenger = login.login();
                     showServices(scanner);
                     break;
                 case "3":
@@ -37,7 +41,6 @@ public class Main {
             System.out.println();
         }
     }
-
     private static void welcomeMessage()
     {
       System.out.println("\n**************************");
@@ -46,10 +49,10 @@ public class Main {
       System.out.println("Please choose an option: Register, Login, or Exit.");
       System.out.println("**************************\n");
     }
-
     private static void showServices(Scanner scanner) {
         boolean keepRunning = true;
         while (keepRunning) {
+            System.out.println();
             System.out.println("=== Available Services ===");
             System.out.println("1. View Flights");
             System.out.println("2. Manage Bookings");
@@ -63,20 +66,69 @@ public class Main {
 
             switch (choice) {
                 case "1":
+                   // viewFlights();
                     break;
                 case "2":
+                   // manageBookings();
                     break;
                 case "3":
+                   // checkIn();
                     break;
                 case "4":
+                   // notifications();
                     break;
                 case "5":
+                    profileSettings(scanner);
                     break;
                 case "6":
                     keepRunning = false;
                     break;
                 default:
                    System.out.println("Invalid choice. Please enter a number between 1 and 6.");
+            }
+            System.out.println();
+        }
+    }
+
+    private static void profileSettings(Scanner scanner) {
+        ProfileSettings profileSettings = new ProfileSettings(scanner);
+        boolean profileMenuFlag = true;
+        while (profileMenuFlag) {
+            System.out.println();
+            System.out.println("=== Profile Settings ===");
+            System.out.println("1. Show my details");
+            System.out.println("2. Update my details");
+            System.out.println("3. Log out");
+            System.out.println("4. Back to services menu");
+            System.out.print("Enter your choice: ");
+            String profileChoice = scanner.nextLine();
+            switch (profileChoice) {
+                case "1":
+                    if (loggedInPassenger != null) {
+                        profileSettings.displayUserdetails(loggedInPassenger);
+                    } 
+                    else {
+                        System.out.println("No user logged in.");
+                    }
+                    break;
+                case "2":
+                    if (loggedInPassenger != null) {
+                        profileSettings.updateUserDetails(loggedInPassenger);
+                    } 
+                    else {
+                        System.out.println("No user logged in.");
+                    }
+                    break;
+                case "3":
+                    System.out.println("Logging out...");
+                    loggedInPassenger = null;
+                    profileMenuFlag = false;
+                    break;
+                case "4":
+                    profileMenuFlag = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, 3, or 4.");
             }
             System.out.println();
         }

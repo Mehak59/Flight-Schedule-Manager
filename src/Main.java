@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 import auth.Register;
 import auth.Login;
+import services.FlightService;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,32 +11,32 @@ public class Main {
         Login login = new Login(scanner);
         boolean flag = true;
         welcomeMessage();
-        while (flag) {
-            System.out.println("=== Menu ===");
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
-            System.out.print("Enter your choice: ");
+        // while (flag) {
+        //     System.out.println("=== Menu ===");
+        //     System.out.println("1. Register");
+        //     System.out.println("2. Login");
+        //     System.out.println("3. Exit");
+        //     System.out.print("Enter your choice: ");
 
-            String choice = scanner.nextLine();
+        //     String choice = scanner.nextLine();
 
-            switch (choice) {
-                case "1":
-                    register.register();
-                    break;
-                case "2":
-                    login.login();
-                    break;
-                case "3":
-                    System.out.println("Exiting from the program.Goodbye!");
-                    flag=false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
-            }
+        //     switch (choice) {
+        //         case "1":
+        //             register.register();
+        //             break;
+        //         case "2":
+        //             login.login();
+        //             break;
+        //         case "3":
+        //             System.out.println("Exiting from the program.Goodbye!");
+        //             flag=false;
+        //             break;
+        //         default:
+        //             System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+        //     }
             System.out.println();
             showServices(scanner);
-        }
+        //}
     }
 
     private static void welcomeMessage()
@@ -49,6 +50,7 @@ public class Main {
 
     private static void showServices(Scanner scanner) {
         boolean keepRunning = true;
+        FlightService flightService = new FlightService();
         while (keepRunning) {
             System.out.println("=== Available Services ===");
             System.out.println("1. View Flights");
@@ -63,7 +65,7 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                   // viewFlights();
+                    viewFlights(scanner, flightService);
                     break;
                 case "2":
                    // manageBookings();
@@ -85,5 +87,22 @@ public class Main {
             }
             System.out.println();
         }
+    }
+
+    private static void viewFlights(Scanner scanner, FlightService flightService) {
+        System.out.print("Enter source: ");
+        String source = scanner.nextLine();
+        System.out.print("Enter destination: ");
+        String destination = scanner.nextLine();
+        System.out.print("Enter date (YYYY-MM-DD): ");
+        String dateStr = scanner.nextLine();
+        java.time.LocalDate date;
+        try {
+            date = java.time.LocalDate.parse(dateStr);
+        } catch (Exception e) {
+            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+            return;
+        }
+        flightService.displayAvailableFlights(source, destination, date);
     }
 }

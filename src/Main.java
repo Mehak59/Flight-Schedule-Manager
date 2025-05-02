@@ -9,7 +9,7 @@ public class Main {
         Register register = new Register(scanner);
         Login login = new Login(scanner);
         boolean flag = true;
-        Welcomemsg();
+        welcomeMessage();
         while (flag) {
             System.out.println("=== Menu ===");
             System.out.println("1. Register");
@@ -36,7 +36,7 @@ public class Main {
             System.out.println();
         }
     }
-    private static void Welcomemsg()
+    private static void welcomeMessage()
     {
       System.out.println("\n**************************");
       System.out.println("Welcome to the Flight Schedule Manager");

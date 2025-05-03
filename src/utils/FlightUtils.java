@@ -10,14 +10,15 @@ import java.util.List;
 public class FlightUtils {
 
     public static List<Flight> loadFlights(String filename) {
-        List<Flight> flights = new LinkedList<>();  
-    
+        List<Flight> flights = new LinkedList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
-    
+
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-    
+                if (line.trim().isEmpty())
+                    continue;
+
                 String[] data = line.split(",");
 
                 try {
@@ -35,25 +36,25 @@ public class FlightUtils {
                     String status = data[11].trim();
                     String checkInTime = data[12].trim();
                     String layover = data[13].trim();
-                    String layoverTime =data[14].trim();
-    
+                    String layoverTime = data[14].trim();
+
                     Flight flight = new Flight(flightID, flightDate, source, destination, departureTime,
                             arrivalTime, capacity, economyFare, businessFare, firstClassFare,
                             isSpecial, status, checkInTime, layover, layoverTime);
-    
-                    flights.add(flight); 
-    
+
+                    flights.add(flight);
+
                 } catch (Exception e) {
                     System.out.println("Parsing error in line: " + line);
                     e.printStackTrace();
                 }
             }
-    
+
         } catch (Exception e) {
             System.out.println("Error reading flight file: " + filename);
             e.printStackTrace();
         }
-    
-        return flights;  
+
+        return flights;
     }
 }

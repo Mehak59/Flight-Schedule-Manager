@@ -34,7 +34,9 @@ public class Main {
                     break;
                 case "2":
                     loggedInPassenger = login.login();
-                    showServices(scanner);
+                    if (loggedInPassenger != null) {
+                        showServices(scanner);
+                    }
                     break;
                 case "3":
                     System.out.println("Exiting from the program.Goodbye!");
@@ -44,7 +46,6 @@ public class Main {
                     System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
             System.out.println();
-            showServices(scanner);
         }
     }
 

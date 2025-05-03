@@ -105,3 +105,4 @@ public void setCheckInTime(String checkInTime){
     this.checkInTime = checkInTime;
 }
  }
+

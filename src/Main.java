@@ -3,7 +3,6 @@ import auth.Register;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import auth.Register;
 import models.Passenger;
 import models.Booking;
 import services.BookingService;

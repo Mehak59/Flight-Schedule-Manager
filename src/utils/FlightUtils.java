@@ -1,56 +1,59 @@
 package utils;
 
 import models.Flight;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FlightUtils {
-    public static List<Flight> loadFlights(String filePath) {
-        List<Flight> flights = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+    public static List<Flight> loadFlights(String filename) {
+        List<Flight> flights = new LinkedList<>();  
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
+    
             while ((line = br.readLine()) != null) {
-                String[] data = parseCSVLine(line);
-                LocalDate flightDate = LocalDate.parse(data[1], formatter);
-                Flight flight = new Flight(
-                        Integer.parseInt(data[0]),
-                        flightDate,
-                        data[2], data[3],
-                        data[4], data[5],
-                        Integer.parseInt(data[6]),
-                        Double.parseDouble(data[7]),
-                        Double.parseDouble(data[8]),
-                        Double.parseDouble(data[9]),
-                        Integer.parseInt(data[10]),
-                        data[11]
-                );
-                flights.add(flight);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading flight data: " + e.getMessage());
-        }
-        return flights;
-    }
+                if (line.trim().isEmpty()) continue;
+    
+                String[] data = line.split(",");
 
-
-    private static String[] parseCSVLine(String line) {
-        List<String> tokens = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        boolean quote = false;
-        for (char c : line.toCharArray()) {
-            if (c == '\"') {
-                quote = !quote;
-            } else if (c == ',' && !quote) {
-                tokens.add(sb.toString().trim());
-                sb.setLength(0);
-            } else {
-                sb.append(c);
+                try {
+                    int flightID = Integer.parseInt(data[0].trim());
+                    LocalDate flightDate = LocalDate.parse(data[1].trim());
+                    String source = data[2].trim();
+                    String destination = data[3].trim();
+                    String departureTime = data[4].trim();
+                    String arrivalTime = data[5].trim();
+                    int capacity = Integer.parseInt(data[6].trim());
+                    int economyFare = Integer.parseInt(data[7].trim());
+                    int businessFare = Integer.parseInt(data[8].trim());
+                    int firstClassFare = Integer.parseInt(data[9].trim());
+                    int isSpecial = Integer.parseInt(data[10].trim());
+                    String status = data[11].trim();
+                    String checkInTime = data[12].trim();
+                    String layover = data[13].trim();
+                    String layoverTime =data[14].trim();
+    
+                    Flight flight = new Flight(flightID, flightDate, source, destination, departureTime,
+                            arrivalTime, capacity, economyFare, businessFare, firstClassFare,
+                            isSpecial, status, checkInTime, layover, layoverTime);
+    
+                    flights.add(flight); 
+    
+                } catch (Exception e) {
+                    System.out.println("Parsing error in line: " + line);
+                    e.printStackTrace();
+                }
             }
+    
+        } catch (Exception e) {
+            System.out.println("Error reading flight file: " + filename);
+            e.printStackTrace();
         }
-        tokens.add(sb.toString().trim());
-        return tokens.toArray(new String[0]);
+    
+        return flights;  
     }
 }

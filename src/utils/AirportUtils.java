@@ -13,7 +13,7 @@ public class AirportUtils {
                 String[] data = line.split(",");
                 if (data.length != 3) {
                     System.out.println("Invalid data format: " + line);
-                    continue; 
+                    continue;
                 }
                 int airportID = Integer.parseInt(data[0]);
                 String airportName = data[1];
@@ -21,7 +21,7 @@ public class AirportUtils {
 
                 if (airportName.isEmpty() || location.isEmpty()) {
                     System.out.println("Invalid airport data in line: " + line);
-                    continue; 
+                    continue;
                 }
 
                 Airport airport = new Airport(airportID, airportName, location);

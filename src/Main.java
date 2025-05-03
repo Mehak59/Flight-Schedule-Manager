@@ -1,10 +1,9 @@
 import java.util.Scanner;
-
+import services.FlightService;
 import auth.Register;
 import models.Passenger;
 import services.ProfileSettings;
 import auth.Login;
-import services.FlightService;
 
 public class Main {
     private static Passenger loggedInPassenger = null;
@@ -108,7 +107,28 @@ public class Main {
             return;
         }
         flightService.displayAvailableFlights(source, destination, date);
+        System.out.print("Do you want to get details of a flight by entering its Flight ID? (yes/no): ");
+        String response = scanner.nextLine().trim().toLowerCase();
+        if (response.equals("yes") || response.equals("y")) {
+            System.out.print("Enter Flight ID: ");
+            String flightIdStr = scanner.nextLine();
+            int flightId;
+            try {
+                flightId = Integer.parseInt(flightIdStr);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Flight ID format.");
+                return;
+            }
+        //     models.Flight flight = flightService.displayFlightDetails(flight, source, flight);
+
+        // if (flight != null) {
+        //     System.out.println("Flight Details:");
+        //     System.out.println(flight.toString());
+        // } else {
+        //     System.out.println("Flight with ID " + flightId + " not found.");
+        // }
     }
+}
 
     private static void profileSettings(Scanner scanner) {
         ProfileSettings profileSettings = new ProfileSettings(scanner);

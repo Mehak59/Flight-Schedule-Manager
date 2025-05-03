@@ -1,0 +1,14 @@
+1,Indira Gandhi International Airport,Delhi
+2,Chhatrapati Shivaji Maharaj International Airport,Mumbai
+3,Chennai International Airport,Chennai
+4,Kempegowda International Airport,Bengaluru
+5,Rajiv Gandhi International Airport,Hyderabad
+6,Raja Sansi Airport,Amritsar
+7,Chandigarh International Airport,Chandigarh
+8,Manohar International Airport,Goa
+9,Sardar Vallabhbhai Patel International Airport,Ahmedabad
+10,Netaji Subhas Chandra Bose International Airport,Kolkata
+11,Jaipur International Airport,Jaipur
+12,Chaudhary Charan Singh International Airport,Lucknow
+
+

@@ -14,11 +14,11 @@ public class Flight {
     private double priceBusiness;
     private double priceFirst;
     private int stops;
-    private String layoverTime;
+    private String status;
 
     public Flight(int flightId, LocalDate flightDate, String from, String to, String departureTime, String arrivalTime, 
                   int duration, double priceEconomy, double priceBusiness, double priceFirst, 
-                  int stops, String layoverTime) {
+                  int stops, String status) {
         this.flightId = flightId;
         this.flightDate = flightDate;
         this.from = from;
@@ -30,7 +30,7 @@ public class Flight {
         this.priceBusiness = priceBusiness;
         this.priceFirst = priceFirst;
         this.stops = stops;
-        this.layoverTime = layoverTime;
+        this.status = status;
     }
 
     public int getFlightId() {
@@ -77,8 +77,8 @@ public class Flight {
         return stops;
     }
 
-    public String getLayoverTime() {
-        return layoverTime;
+    public String getStatus() {
+        return status;
     }
 
     @Override
@@ -93,6 +93,6 @@ public class Flight {
                 " | Business Price: ₹" + priceBusiness +
                 " | First Class Price: ₹" + priceFirst +
                 " | Stops: " + stops +
-                " | Layover Time: " + layoverTime;
+                " | Status: " + status;
     }
 }

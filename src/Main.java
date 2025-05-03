@@ -11,7 +11,7 @@ import services.ProfileSettings;
 public class Main {
     private static Passenger loggedInPassenger = null;
 
-    public static void main(String[] args) {  
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Register register = new Register(scanner);
         Login login = new Login(scanner);
@@ -31,28 +31,30 @@ public class Main {
                     register.register();
                     break;
                 case "2":
-                loggedInPassenger = login.login();
-                    showServices(scanner);
+                    loggedInPassenger = login.login();
+                    if (loggedInPassenger != null) {
+                        showServices(scanner);
+                    }
                     break;
                 case "3":
                     System.out.println("Exiting from the program.Goodbye!");
-                    flag=false;
+                    flag = false;
                     break;
                 default:
                     System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
             System.out.println();
-            showServices(scanner);
         }
     }
-    private static void welcomeMessage()
-    {
-      System.out.println("\n**************************");
-      System.out.println("Welcome to the Flight Schedule Manager");
-      System.out.println("Manage your flights, bookings, and check-ins with ease.");
-      System.out.println("Please choose an option: Register, Login, or Exit.");
-      System.out.println("**************************\n");
+
+    private static void welcomeMessage() {
+        System.out.println("\n**************************");
+        System.out.println("Welcome to the Flight Schedule Manager");
+        System.out.println("Manage your flights, bookings, and check-ins with ease.");
+        System.out.println("Please choose an option: Register, Login, or Exit.");
+        System.out.println("**************************\n");
     }
+
     private static void showServices(Scanner scanner) {
         boolean keepRunning = true;
         FlightService flightService = new FlightService();
@@ -77,10 +79,10 @@ public class Main {
                     manageBookings(scanner);
                     break;
                 case "3":
-                   // checkIn();
+                    // checkIn();
                     break;
                 case "4":
-                   // notifications();
+                    // notifications();
                     break;
                 case "5":
                     profileSettings(scanner);
@@ -89,7 +91,7 @@ public class Main {
                     keepRunning = false;
                     break;
                 default:
-                   System.out.println("Invalid choice. Please enter a number between 1 and 6.");
+                    System.out.println("Invalid choice. Please enter a number between 1 and 6.");
             }
             System.out.println();
         }
@@ -128,16 +130,14 @@ public class Main {
                 case "1":
                     if (loggedInPassenger != null) {
                         profileSettings.displayUserdetails(loggedInPassenger);
-                    } 
-                    else {
+                    } else {
                         System.out.println("No user logged in.");
                     }
                     break;
                 case "2":
                     if (loggedInPassenger != null) {
                         profileSettings.updateUserDetails(loggedInPassenger);
-                    } 
-                    else {
+                    } else {
                         System.out.println("No user logged in.");
                     }
                     break;
@@ -205,8 +205,10 @@ public class Main {
         }
         System.out.println("Your Bookings:");
         for (Booking b : bookings) {
-            System.out.printf("Booking ID: %d, Flight ID: %d, Date: %s, Seat: %d, Class: %s, Price: %.2f, Payment Status: %s\n",
-                    b.getBookingID(), b.getFlightID(), b.getBookingDate(), b.getSeatNumber(), b.getTravelClass(), b.getPrice(), b.getPaymentStatus());
+            System.out.printf(
+                    "Booking ID: %d, Flight ID: %d, Date: %s, Seat: %d, Class: %s, Price: %.2f, Payment Status: %s\n",
+                    b.getBookingID(), b.getFlightID(), b.getBookingDate(), b.getSeatNumber(), b.getTravelClass(),
+                    b.getPrice(), b.getPaymentStatus());
         }
     }
 
@@ -227,7 +229,8 @@ public class Main {
             System.out.print("Enter Price: ");
             double price = Double.parseDouble(scanner.nextLine());
 
-            Object bookingObj = bookingService.createBooking(flightID, loggedInPassenger.getPassengerId(), bookingDate, seatNumber, travelClass, price);
+            Object bookingObj = bookingService.createBooking(flightID, loggedInPassenger.getPassengerId(), bookingDate,
+                    seatNumber, travelClass, price);
             if (bookingObj != null) {
                 System.out.println("Booking created successfully!");
             } else {

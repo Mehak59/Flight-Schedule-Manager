@@ -2,10 +2,10 @@ import auth.Login;
 import auth.Register;
 import java.util.LinkedList;
 import java.util.Scanner;
-import models.Passenger;
 import models.Booking;
-import services.BookingService;
+import models.Passenger;
 import services.FlightService;
+import services.ManageBooking;
 import services.ProfileSettings;
 
 public class Main {
@@ -198,7 +198,7 @@ public class Main {
     }
 
     private static void manageBookings(Scanner scanner) {
-        BookingService bookingService = new BookingService();
+        ManageBooking bookingService = new ManageBooking();
         boolean bookingMenuFlag = true;
 
         while (bookingMenuFlag) {
@@ -234,7 +234,7 @@ public class Main {
         }
     }
 
-    private static void viewMyBookings(Scanner scanner, BookingService bookingService) {
+    private static void viewMyBookings(Scanner scanner, ManageBooking bookingService) {
         if (loggedInPassenger == null) {
             System.out.println("You must be logged in to view bookings.");
             return;
@@ -253,7 +253,7 @@ public class Main {
         }
     }
 
-    private static void createNewBooking(Scanner scanner, BookingService bookingService) {
+    private static void createNewBooking(Scanner scanner, ManageBooking bookingService) {
         if (loggedInPassenger == null) {
             System.out.println("You must be logged in to create a booking.");
             return;
@@ -282,7 +282,7 @@ public class Main {
         }
     }
 
-    private static void cancelBooking(Scanner scanner, BookingService bookingService) {
+    private static void cancelBooking(Scanner scanner, ManageBooking bookingService) {
         if (loggedInPassenger == null) {
             System.out.println("You must be logged in to cancel a booking.");
             return;
@@ -301,7 +301,7 @@ public class Main {
         }
     }
 
-    private static void makePayment(Scanner scanner, BookingService bookingService) {
+    private static void makePayment(Scanner scanner, ManageBooking bookingService) {
         if (loggedInPassenger == null) {
             System.out.println("You must be logged in to make a payment.");
             return;

@@ -1,12 +1,17 @@
 import auth.Login;
 import auth.Register;
+import java.io.BufferedReader; // Included in Code 1
+import java.io.FileReader; // Included in Code 1
 import java.util.LinkedList;
 import java.util.Scanner;
+import models.Flight;
 import models.Booking;
 import models.Passenger;
 import services.FlightService;
 import services.ManageBooking;
 import services.ProfileSettings;
+import services.Bookticket; 
+import services.MakePayment;
 
 public class Main {
     private static Passenger loggedInPassenger = null;
@@ -147,7 +152,76 @@ public class Main {
                         System.out.println("Invalid number format for tickets.");
                         return;
                     }
-                    flightService.displayBookingSummary(flight, flightClass, numberOfTickets);
+                    Bookticket bookticket = new Bookticket();
+                    boolean confirmed = bookticket.confirmBooking(scanner);
+                    if (confirmed) {
+                        System.out.println(" ");
+                        LinkedList<Passenger> passengers = bookticket.collectPassengerDetails(numberOfTickets, scanner);
+                        String bookingSummary = String.format("FlightID: %d, Class: %s, Tickets: %d", flight.getFlightId(), flightClass, numberOfTickets);
+                        String filePath = "data/bookings.txt";
+                        bookticket.saveBookings(passengers, bookingSummary, filePath);
+                        MakePayment makePayment = new MakePayment();
+                        // Normalize flightClass to expected values
+                        String normalizedClass;
+                        switch (flightClass.toLowerCase()) {
+                            case "economy":
+                            case "eco":
+                                normalizedClass = "economy";
+                                break;
+                            case "business":
+                            case "bus":
+                                normalizedClass = "business";
+                                break;
+                            case "first":
+                            case "fst":
+                                normalizedClass = "first";
+                                break;
+                            default:
+                                System.out.println("Invalid flight class selected. Defaulting to economy.");
+                                normalizedClass = "economy";
+                        }
+                        double pricePerPassenger = makePayment.getFlightPrice(flight.getFlightId(), normalizedClass, "data/flights.txt");
+                        double layoverSurcharge = 0.0;
+                        // Read layover surcharge from flights.txt for the flight ID
+                        try (BufferedReader br = new BufferedReader(new FileReader("data/flights.txt"))) {
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                String[] parts = line.split(",");
+                                if (parts.length >= 15) {
+                                    int id = Integer.parseInt(parts[0].trim());
+                                    if (id == flight.getFlightId()) {
+                                        int stops = Integer.parseInt(parts[10].trim());
+                                        if (stops > 0) {
+                                            // Calculate 10% surcharge as layover surcharge
+                                            layoverSurcharge = pricePerPassenger * 0.10;
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error reading layover surcharge: " + e.getMessage());
+                        }
+                        makePayment.displayDetailedBill(numberOfTickets, pricePerPassenger, layoverSurcharge);
+
+                        boolean paymentSuccess = makePayment.processPayment(scanner, numberOfTickets * (pricePerPassenger + layoverSurcharge));
+                        if (paymentSuccess) {
+                            System.out.println("Booking made successfully!");
+                            System.out.print("Enter '1' to print tickets or '2' to go back: ");
+                            String postPaymentChoice = scanner.nextLine().trim();
+                            if (postPaymentChoice.equals("1")) {
+                                services.TicketPrinter.printTickets(passengers, flight, normalizedClass);
+                            } else if (postPaymentChoice.equals("2")) {
+                                System.out.println("Returning to main menu.");
+                            } else {
+                                System.out.println("Invalid choice. Returning to main menu.");
+                            }
+                        } else {
+                            System.out.println("Booking cancelled due to payment failure.");
+                        }
+                    } else {
+                        System.out.println("Booking cancelled.");
+                    }
                 }
             } else {
                 System.out.println("Flight with ID " + flightId + " not found.");

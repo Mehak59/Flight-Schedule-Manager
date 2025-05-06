@@ -1,16 +1,15 @@
 import auth.Login;
 import auth.Register;
-import java.io.BufferedReader; // Included in Code 1
-import java.io.FileReader; // Included in Code 1
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.Scanner;
-import models.Flight;
 import models.Booking;
 import models.Passenger;
 import services.FlightService;
 import services.ManageBooking;
 import services.ProfileSettings;
-import services.Bookticket; 
+import services.Bookticket;
 import services.MakePayment;
 
 public class Main {
@@ -157,7 +156,8 @@ public class Main {
                     if (confirmed) {
                         System.out.println(" ");
                         LinkedList<Passenger> passengers = bookticket.collectPassengerDetails(numberOfTickets, scanner);
-                        String bookingSummary = String.format("FlightID: %d, Class: %s, Tickets: %d", flight.getFlightId(), flightClass, numberOfTickets);
+                        String bookingSummary = String.format("FlightID: %d, Class: %s, Tickets: %d",
+                                flight.getFlightId(), flightClass, numberOfTickets);
                         String filePath = "data/bookings.txt";
                         bookticket.saveBookings(passengers, bookingSummary, filePath);
                         MakePayment makePayment = new MakePayment();
@@ -180,7 +180,8 @@ public class Main {
                                 System.out.println("Invalid flight class selected. Defaulting to economy.");
                                 normalizedClass = "economy";
                         }
-                        double pricePerPassenger = makePayment.getFlightPrice(flight.getFlightId(), normalizedClass, "data/flights.txt");
+                        double pricePerPassenger = makePayment.getFlightPrice(flight.getFlightId(), normalizedClass,
+                                "data/flights.txt");
                         double layoverSurcharge = 0.0;
                         // Read layover surcharge from flights.txt for the flight ID
                         try (BufferedReader br = new BufferedReader(new FileReader("data/flights.txt"))) {
@@ -204,7 +205,8 @@ public class Main {
                         }
                         makePayment.displayDetailedBill(numberOfTickets, pricePerPassenger, layoverSurcharge);
 
-                        boolean paymentSuccess = makePayment.processPayment(scanner, numberOfTickets * (pricePerPassenger + layoverSurcharge));
+                        boolean paymentSuccess = makePayment.processPayment(scanner,
+                                numberOfTickets * (pricePerPassenger + layoverSurcharge));
                         if (paymentSuccess) {
                             System.out.println("Booking made successfully!");
                             System.out.print("Enter '1' to print tickets or '2' to go back: ");

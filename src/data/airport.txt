@@ -10,5 +10,3 @@
 10,Netaji Subhas Chandra Bose International Airport,Kolkata
 11,Jaipur International Airport,Jaipur
 12,Chaudhary Charan Singh International Airport,Lucknow
-
-

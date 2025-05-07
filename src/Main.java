@@ -64,9 +64,8 @@ public class Main {
             System.out.println("1. View Flights");
             System.out.println("2. Manage Bookings");
             System.out.println("3. Check-in");
-            System.out.println("4. Notifications");
-            System.out.println("5. Profile Settings");
-            System.out.println("6. Go Back");
+            System.out.println("4. Profile Settings");
+            System.out.println("5. Go Back");
             System.out.print("Enter your choice: ");
 
             String choice = scanner.nextLine();
@@ -82,12 +81,9 @@ public class Main {
                     // checkIn();
                     break;
                 case "4":
-                    // notifications();
-                    break;
-                case "5":
                     profileSettings(scanner);
                     break;
-                case "6":
+                case "5":
                     keepRunning = false;
                     break;
                 default:
@@ -98,6 +94,7 @@ public class Main {
     }
 
     private static void viewFlights(Scanner scanner, FlightService flightService) {
+        flightService.displayListFlights();
         System.out.print("Enter source: ");
         String source = scanner.nextLine();
         System.out.print("Enter destination: ");

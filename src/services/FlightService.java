@@ -25,6 +25,30 @@ public class FlightService {
         }
     }
 
+    public void displayListFlights(){
+        if (flights.isEmpty()) {
+            System.out.println("No flights available.");
+            return;
+        }
+
+        // Use a HashMap to store unique routes as keys
+        java.util.Map<String, Boolean> uniqueRoutesMap = new java.util.HashMap<>();
+
+        for (Flight f : flights) {
+            if (f.getFrom() != null && f.getTo() != null) {
+                String route = f.getFrom() + " --------> " + f.getTo();
+                uniqueRoutesMap.put(route, Boolean.TRUE);
+            }
+        }
+
+        System.out.println("\n----------------------Available Flights --------------------------");
+        for (String route : uniqueRoutesMap.keySet()) {
+            System.out.println(route + "   ");
+        }
+        System.out.println("-------------------------------------------------------------------");
+        
+    }
+
     public void displayAvailableFlights(String source, String destination, LocalDate date) {
         LinkedList<Flight> availableFlights = new LinkedList<>();
 
@@ -138,9 +162,8 @@ public class FlightService {
 
         double totalPrice = basePrice * numberOfTickets;
 
-        // Add surcharge if flight has stops (layover)
         if (flight.getStops() > 0) {
-            double surchargeRate = 0.10; // 10% surcharge for layover
+            double surchargeRate = 0.10;
             double surcharge = totalPrice * surchargeRate;
             System.out.println("\n--------------------Layover Surcharge----------------------------");
             System.out.printf("Base price before layover: Rs.%.2f%n", totalPrice);

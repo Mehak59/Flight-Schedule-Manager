@@ -103,15 +103,19 @@ public class Main {
         String source = scanner.nextLine();
         System.out.print("Enter destination: ");
         String destination = scanner.nextLine();
-        System.out.print("Enter date (YYYY-MM-DD): ");
-        String dateStr = scanner.nextLine();
-        java.time.LocalDate date;
-        try {
-            date = java.time.LocalDate.parse(dateStr);
-        } catch (Exception e) {
-            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-            return;
+
+        String dateStr;
+        while (true) {
+            System.out.print("Enter date (YYYY-MM-DD): ");
+            dateStr = scanner.nextLine();
+            if (flightService.isValidFutureDate(dateStr)) {
+                break;
+            }
+            System.out.println("Please enter a valid future date.");
         }
+
+        java.time.LocalDate date = java.time.LocalDate.parse(dateStr);
+
         flightService.displayAvailableFlights(source, destination, date);
         System.out.print("Do you want to get details of a flight by entering its Flight ID? (yes/no): ");
         String response = scanner.nextLine().trim().toLowerCase();

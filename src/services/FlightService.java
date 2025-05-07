@@ -45,7 +45,7 @@ public class FlightService {
         for (String route : uniqueRoutesMap.keySet()) {
             System.out.println(route + "   ");
         }
-        System.out.println("-------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------\n");
         
     }
 
@@ -179,5 +179,23 @@ public class FlightService {
         System.out.printf("Number of Tickets: %d%n", numberOfTickets);
         System.out.printf("Total Price: Rs.%.2f%n", totalPrice);
         System.out.println("-------------------------------------------------------------------");
+    }
+
+    public boolean isValidFutureDate(String dateStr) {
+        if (dateStr == null || dateStr.isEmpty()) {
+            return false;
+        }
+        try {
+            java.time.LocalDate inputDate = java.time.LocalDate.parse(dateStr);
+            java.time.LocalDate today = java.time.LocalDate.now();
+            if (inputDate.isBefore(today)) {
+                System.out.println("NOT AVAILABLE!");
+                return false;
+            }
+            return true;
+        } catch (java.time.format.DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+            return false;
+        }
     }
 }

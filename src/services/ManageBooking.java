@@ -3,10 +3,10 @@ package services;
 import java.util.LinkedList;
 import models.Booking;
 
-public class BookingService {
+public class ManageBooking {
     private LinkedList<Booking> bookings;
 
-    public BookingService() {
+    public ManageBooking() {
         bookings = new LinkedList<>();
     }
 

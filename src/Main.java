@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import models.Booking;
 import models.Passenger;
+import services.Bookticket;
 import services.FlightService;
+import services.MakePayment;
 import services.ManageBooking;
 import services.ProfileSettings;
-import services.Bookticket;
-import services.MakePayment;
 
 public class Main {
     private static Passenger loggedInPassenger = null;
@@ -98,6 +98,7 @@ public class Main {
     }
 
     private static void viewFlights(Scanner scanner, FlightService flightService) {
+        ManageBooking bookingService = new ManageBooking();
         flightService.displayListFlights();
         System.out.print("Enter source: ");
         String source = scanner.nextLine();
@@ -156,7 +157,7 @@ public class Main {
                     boolean confirmed = bookticket.confirmBooking(scanner);
                     if (confirmed) {
                         System.out.println(" ");
-                        LinkedList<Passenger> passengers = bookticket.collectPassengerDetails(numberOfTickets, scanner);
+                        LinkedList<Passenger> passengers = bookticket.collectPassengerDetails(numberOfTickets, scanner, loggedInPassenger.getPassengerId());
                         String bookingSummary = String.format("FlightID: %d, Class: %s, Tickets: %d",
                                 flight.getFlightId(), flightClass, numberOfTickets);
                         String filePath = "data/bookings.txt";
@@ -281,10 +282,9 @@ public class Main {
         while (bookingMenuFlag) {
             System.out.println("\n=== Manage Bookings ===");
             System.out.println("1. View My Bookings");
-            System.out.println("2. Create New Booking");
-            System.out.println("3. Cancel Booking");
-            System.out.println("4. Make Payment");
-            System.out.println("5. Go Back");
+            System.out.println("2. Cancel Booking");
+            System.out.println("3. Make Payment");
+            System.out.println("4. Go Back");
             System.out.print("Enter your choice: ");
 
             String choice = scanner.nextLine();
@@ -294,19 +294,16 @@ public class Main {
                     viewMyBookings(scanner, bookingService);
                     break;
                 case "2":
-                    createNewBooking(scanner, bookingService);
-                    break;
-                case "3":
                     cancelBooking(scanner, bookingService);
                     break;
-                case "4":
+                case "3":
                     makePayment(scanner, bookingService);
                     break;
-                case "5":
+                case "4":
                     bookingMenuFlag = false;
                     break;
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
             }
         }
     }
@@ -316,48 +313,10 @@ public class Main {
             System.out.println("You must be logged in to view bookings.");
             return;
         }
-        LinkedList<Booking> bookings = bookingService.getBookingsByPassenger(loggedInPassenger.getPassengerId());
-        if (bookings.isEmpty()) {
-            System.out.println("You have no bookings.");
-            return;
-        }
-        System.out.println("Your Bookings:");
-        for (Booking b : bookings) {
-            System.out.printf(
-                    "Booking ID: %d, Flight ID: %d, Date: %s, Seat: %d, Class: %s, Price: %.2f, Payment Status: %s\n",
-                    b.getBookingID(), b.getFlightID(), b.getBookingDate(), b.getSeatNumber(), b.getTravelClass(),
-                    b.getPrice(), b.getPaymentStatus());
-        }
+        System.out.println("Logged in passenger ID: '" + loggedInPassenger.getPassengerId() + "'");
+        bookingService.displayBookingsForPassenger(loggedInPassenger.getPassengerId());
     }
 
-    private static void createNewBooking(Scanner scanner, ManageBooking bookingService) {
-        if (loggedInPassenger == null) {
-            System.out.println("You must be logged in to create a booking.");
-            return;
-        }
-        try {
-            System.out.print("Enter Flight ID: ");
-            int flightID = Integer.parseInt(scanner.nextLine());
-            System.out.print("Enter Booking Date (YYYY-MM-DD): ");
-            String bookingDate = scanner.nextLine();
-            System.out.print("Enter Seat Number: ");
-            int seatNumber = Integer.parseInt(scanner.nextLine());
-            System.out.print("Enter Travel Class (Economy/Business): ");
-            String travelClass = scanner.nextLine();
-            System.out.print("Enter Price: ");
-            double price = Double.parseDouble(scanner.nextLine());
-
-            Object bookingObj = bookingService.createBooking(flightID, loggedInPassenger.getPassengerId(), bookingDate,
-                    seatNumber, travelClass, price);
-            if (bookingObj != null) {
-                System.out.println("Booking created successfully!");
-            } else {
-                System.out.println("Failed to create booking.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter numeric values where required.");
-        }
-    }
 
     private static void cancelBooking(Scanner scanner, ManageBooking bookingService) {
         if (loggedInPassenger == null) {

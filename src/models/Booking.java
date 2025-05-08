@@ -1,9 +1,8 @@
 package models;
 
-public class Booking {
+public class Booking extends Passenger {
     private int bookingID;
     private int flightID;
-    private int passengerID;
     private String bookingDate;
     private int seatNumber;
     private String travelClass;
@@ -12,10 +11,12 @@ public class Booking {
     private String checkInStatus;
     private String checkInTime;
 
-    public Booking(int bookingID, int flightID, int passengerID, String bookingDate, int seatNumber, String travelClass, double price, String paymentStatus, String checkInStatus, String checkInTime){
+    public Booking(String passengerId, String firstName, String lastName, String dateOfBirth, String phoneNo,
+                   String email, String nationality, int bookingID, int flightID, String bookingDate, int seatNumber,
+                   String travelClass, double price, String paymentStatus, String checkInStatus, String checkInTime) {
+        super(passengerId, firstName, lastName, dateOfBirth, phoneNo, email, nationality);
         this.bookingID = bookingID;
         this.flightID = flightID;
-        this.passengerID = passengerID;
         this.bookingDate = bookingDate;
         this.seatNumber = seatNumber;
         this.travelClass = travelClass;
@@ -39,14 +40,6 @@ public int getFlightID(){
 
 public void setFlightID(int flightID){
     this.flightID = flightID;
-}
-
-public int getPassengerID(){
-    return passengerID;
-}
-
-public void setPassengerID(int passengerID){
-    this.passengerID = passengerID;
 }
 
 public String getBookingDate(){

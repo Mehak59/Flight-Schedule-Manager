@@ -1,13 +1,14 @@
 package services;
 
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.UUID;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Scanner;
 import models.Passenger;
 
 public class Bookticket {
+
+    // Removed duplicate saveBookingWithFlightData method to fix duplicate method error and syntax error
 
     public boolean confirmBooking(Scanner scanner) {
         System.out.print("Are you sure with your booking? (yes/no): ");
@@ -15,7 +16,7 @@ public class Bookticket {
         return response.equals("yes") || response.equals("y");
     }
 
-    public LinkedList<Passenger> collectPassengerDetails(int numberOfTickets, Scanner scanner) {
+    public LinkedList<Passenger> collectPassengerDetails(int numberOfTickets, Scanner scanner, String passengerId) {
         LinkedList<Passenger> passengers = new LinkedList<>();
         for (int i = 1; i <= numberOfTickets; i++) {
             System.out.println("Passenger " + i + ":");
@@ -82,8 +83,6 @@ public class Bookticket {
             System.out.print("- Enter Seat Preference (w for window, a for aisle, m for middle): ");
             String seatPref = scanner.nextLine().trim();
 
-            String passengerId = UUID.randomUUID().toString();
-
             Passenger passenger = new Passenger(passengerId, firstName, lastName, dob, phoneNo, email, nationality);
             // Optionally, you can store seatPref somewhere if needed
 
@@ -109,6 +108,32 @@ public class Bookticket {
             System.out.println("Bookings saved successfully");
         } catch (IOException e) {
             System.out.println("Error saving bookings: " + e.getMessage());
+        }
+    }
+
+    public void saveBookingWithFlightData(models.Booking booking, String filePath) {
+        try (java.io.FileWriter writer = new java.io.FileWriter(filePath, true)) {
+            String line = String.format("%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%.2f,%s,%s,%d,%d\n",
+                    booking.getBookingID(),
+                    booking.getPassengerId(),
+                    booking.getEmail(),  // Added username (email) here after passengerId
+                    booking.getFirstName(),
+                    booking.getLastName(),
+                    booking.getDateOfBirth(),
+                    booking.getPhoneNo(),
+                    booking.getNationality(),
+                    booking.getBookingDate(),
+                    booking.getTravelClass(),
+                    booking.getCheckInStatus(),
+                    booking.getPrice(),
+                    booking.getPaymentStatus(),
+                    booking.getCheckInTime(),
+                    booking.getSeatNumber(),
+                    booking.getFlightID());
+            writer.write(line);
+            System.out.println("Booking with flight data saved successfully");
+        } catch (java.io.IOException e) {
+            System.out.println("Error saving booking with flight data: " + e.getMessage());
         }
     }
 }

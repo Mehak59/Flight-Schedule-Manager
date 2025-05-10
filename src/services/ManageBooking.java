@@ -47,12 +47,9 @@ public class ManageBooking {
                                 nationality,
                                 bookingId, flightID, bookingDate, seatNumber, travelClass, price, paymentStatus);
                         bookings.add(booking);
-                        System.out.println("Added booking for passengerId: " + passengerId);
                     } catch (Exception e) {
                         System.out.println("Error parsing booking line: " + e.getMessage());
                     }
-                } else {
-                    System.out.println("Skipping line due to insufficient parts: " + line);
                 }
             }
         } catch (Exception e) {

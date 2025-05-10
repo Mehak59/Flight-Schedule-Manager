@@ -110,7 +110,6 @@ public class SeatService {
                 }
                 writer.println();
             }
-            System.out.println("Seat bookings saved for flight " + flightId);
         } catch (IOException e) {
             System.out.println("Error saving seat bookings: " + e.getMessage());
         }

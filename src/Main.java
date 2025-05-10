@@ -99,8 +99,8 @@ public class Main {
         System.out.println("=== Available Services ===");
         System.out.println("1. View Flights");
         System.out.println("2. Manage Bookings");
-        System.out.println("4. Profile Settings");
-        System.out.println("5. Go Back");
+        System.out.println("3. Profile Settings");
+        System.out.println("4. Go Back");
         System.out.print("Enter your choice: ");
         String choice = scanner.nextLine();
         switch (choice) {
@@ -284,7 +284,7 @@ public class Main {
         System.out.println("\n=== Manage Bookings ===");
         System.out.println("1. View My Bookings");
         System.out.println("2. Cancel Booking");
-        System.out.println("4. Go Back");
+        System.out.println("3. Go Back");
         System.out.print("Enter your choice: ");
 
         String choice = scanner.nextLine();

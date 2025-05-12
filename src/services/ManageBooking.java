@@ -11,99 +11,45 @@ import models.Flight;
 public class ManageBooking {
     private LinkedList<Booking> bookings;
     private Map<Integer, Flight> flights;
+    private SeatService seatService;
 
     public ManageBooking() {
         bookings = new LinkedList<>();
         flights = new HashMap<>();
+        seatService = new SeatService();
         loadFlightsFromFile("data/flights.txt");
         loadBookingsFromFile("data/bookings.txt");
     }
 
     private void loadBookingsFromFile(String filePath) {
-        System.out.println("Loading bookings from file: " + filePath);
-        int bookingCounter = 1;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println("Reading line: " + line);
                 String[] parts = line.split(",");
-                if (parts.length >= 8) {
+                if (parts.length >= 14) {
                     try {
                         String passengerId = parts[0].trim();
                         String firstName = parts[1].trim();
                         String lastName = parts[2].trim();
                         String dateOfBirth = parts[3].trim();
-                        String nationality = parts[4].trim();
-                        String phoneNo = parts[5].trim();
-                        String email = parts[6].trim();
+                        String phoneNo = parts[4].trim();
+                        String email = parts[5].trim();
+                        String nationality = parts[6].trim();
+                        int bookingId = Integer.parseInt(parts[7].trim());
+                        int flightID = Integer.parseInt(parts[8].trim());
+                        String bookingDate = parts[9].trim();
+                        String seatNumber = parts[10].trim();
+                        String travelClass = parts[11].trim();
+                        String paymentStatus = parts[12].trim();
+                        double price = Double.parseDouble(parts[13].trim());
 
-                        StringBuilder flightInfoBuilder = new StringBuilder();
-                        for (int i = 7; i < parts.length; i++) {
-                            flightInfoBuilder.append(parts[i].trim());
-                            if (i < parts.length - 1) {
-                                flightInfoBuilder.append(",");
-                            }
-                        }
-                        String flightInfo = flightInfoBuilder.toString();
-
-                        int flightID = -1;
-                        String travelClass = "Unknown";
-                        int tickets = 1;
-
-                        String[] flightParts = flightInfo.split(",");
-                        for (String fp : flightParts) {
-                            fp = fp.trim();
-                            if (fp.startsWith("FlightID:")) {
-                                try {
-                                    flightID = Integer.parseInt(fp.substring(9).trim());
-                                } catch (NumberFormatException e) {
-                                    flightID = -1;
-                                }
-                            } else if (fp.startsWith("Class:")) {
-                                travelClass = fp.substring(6).trim();
-                            } else if (fp.startsWith("Tickets:")) {
-                                try {
-                                    tickets = Integer.parseInt(fp.substring(8).trim());
-                                } catch (NumberFormatException e) {
-                                    tickets = 1;
-                                }
-                            }
-                        }
-
-                        int bookingID = bookingCounter++;
-                        String bookingDate = java.time.LocalDate.now().toString();
-                        String checkInStatus = "N/A";
-                        String paymentStatus = "Paid";  // Changed to Paid as per user feedback
-                        String checkInTime = "N/A";
-                        int seatNumber = 0;
-
-                        double price = 0.0;
-                        Flight flight = flights.get(flightID);
-                        if (flight != null) {
-                            switch (travelClass.toLowerCase()) {
-                                case "economy":
-                                    price = flight.getPriceEconomy() * tickets;
-                                    break;
-                                case "business":
-                                    price = flight.getPriceBusiness() * tickets;
-                                    break;
-                                case "first":
-                                    price = flight.getPriceFirst() * tickets;
-                                    break;
-                                default:
-                                    price = 0.0;
-                            }
-                        }
-
-                        Booking booking = new Booking(passengerId, firstName, lastName, dateOfBirth, phoneNo, email, nationality,
-                                bookingID, flightID, bookingDate, seatNumber, travelClass, price, paymentStatus, checkInStatus, checkInTime);
+                        Booking booking = new Booking(passengerId, firstName, lastName, dateOfBirth, phoneNo, email,
+                                nationality,
+                                bookingId, flightID, bookingDate, seatNumber, travelClass, price, paymentStatus);
                         bookings.add(booking);
-                        System.out.println("Added booking for passengerId: " + passengerId);
                     } catch (Exception e) {
                         System.out.println("Error parsing booking line: " + e.getMessage());
                     }
-                } else {
-                    System.out.println("Skipping line due to insufficient parts: " + line);
                 }
             }
         } catch (Exception e) {
@@ -135,7 +81,8 @@ public class ManageBooking {
                         String layoverTime = parts[14].trim();
 
                         Flight flight = new Flight(flightId, date, from, to, departureTime, arrivalTime,
-                                duration, priceEconomy, priceBusiness, priceFirst, stops, status, checkInTime, layover, layoverTime);
+                                duration, priceEconomy, priceBusiness, priceFirst, stops, status, checkInTime, layover,
+                                layoverTime);
                         flights.put(flightId, flight);
                     } catch (Exception e) {
                         System.out.println("Error parsing flight line: " + e.getMessage());
@@ -144,44 +91,6 @@ public class ManageBooking {
             }
         } catch (Exception e) {
             System.out.println("Error loading flights from file: " + e.getMessage());
-        }
-    }
-
-    public void printRawBookings() {
-        System.out.println("Your Bookings:");
-        for (Booking b : bookings) {
-            Flight flight = flights.get(b.getFlightID());
-            System.out.println("===============================================");
-            System.out.println("Booking ID: " + b.getBookingID() + " | Booking Date: " + b.getBookingDate());
-            System.out.println("Name: " + b.getFirstName() + " " + b.getLastName());
-            System.out.println("Passenger ID: " + b.getPassengerId());
-            System.out.println("Travel Class: " + b.getTravelClass());
-            System.out.println("Seat Number: " + b.getSeatNumber());
-            System.out.println("Price: $" + String.format("%.2f", b.getPrice()));
-            System.out.println("Payment Status: " + b.getPaymentStatus());
-            System.out.println("Check-In Status: " + b.getCheckInStatus());
-            System.out.println("Check-In Time: " + (b.getCheckInTime() != null ? b.getCheckInTime() : "N/A"));
-            System.out.println("Flight Details:");
-            if (flight != null) {
-                System.out.println("  Flight ID: " + flight.getFlightId());
-                System.out.println("  Date: " + flight.getFlightDate());
-                System.out.println("  From: " + flight.getFrom());
-                System.out.println("  To: " + flight.getTo());
-                System.out.println("  Departure Time: " + flight.getDepartureTime());
-                System.out.println("  Arrival Time: " + flight.getArrivalTime());
-                System.out.println("  Duration: " + flight.getDuration() + " minutes");
-                System.out.println("  Price Economy: $" + flight.getPriceEconomy());
-                System.out.println("  Price Business: $" + flight.getPriceBusiness());
-                System.out.println("  Price First: $" + flight.getPriceFirst());
-                System.out.println("  Stops: " + flight.getStops());
-                System.out.println("  Status: " + flight.getStatus());
-                System.out.println("  Check-In Time: " + flight.getCheckInTime());
-                System.out.println("  Layover: " + flight.getLayover());
-                System.out.println("  Layover Time: " + flight.getLayoverTime());
-            } else {
-                System.out.println("  Flight details not found.");
-            }
-            System.out.println("===============================================");
         }
     }
 
@@ -211,31 +120,26 @@ public class ManageBooking {
             System.out.println("Passenger ID: " + b.getPassengerId());
             System.out.println("Travel Class: " + b.getTravelClass());
             System.out.println("Seat Number: " + b.getSeatNumber());
-            System.out.println("Price: $" + b.getPrice());
+            System.out.println("Price: Rs." + b.getPrice());
             System.out.println("Payment Status: " + b.getPaymentStatus());
-            System.out.println("Check-In Status: " + b.getCheckInStatus());
-            System.out.println("Check-In Time: " + (b.getCheckInTime() != null ? b.getCheckInTime() : "N/A"));
             System.out.println("Flight Details:");
             Flight flight = flights.get(b.getFlightID());
-                if (flight != null) {
-                    System.out.println("  Flight ID: " + flight.getFlightId());
-                    System.out.println("  Date: " + flight.getFlightDate());
-                    System.out.println("  Source: " + flight.getFrom());
-                    System.out.println("  Destination: " + flight.getTo());
-                    System.out.println("  Departure Time: " + flight.getDepartureTime());
-                    System.out.println("  Arrival Time: " + flight.getArrivalTime());
-                    System.out.println("  Duration: " + flight.getDuration() + " minutes");
-                    System.out.println("  Price Economy: $" + flight.getPriceEconomy());
-                    System.out.println("  Price Business: $" + flight.getPriceBusiness());
-                    System.out.println("  Price First: $" + flight.getPriceFirst());
-                    System.out.println("  Stops: " + flight.getStops());
-                    System.out.println("  Status: " + flight.getStatus());
-                    System.out.println("  Check-In Time: " + flight.getCheckInTime());
-                    System.out.println("  Layover: " + flight.getLayover());
-                    System.out.println("  Layover Time: " + flight.getLayoverTime());
-                } else {
-                    System.out.println("  Flight details not found.");
-                }
+            if (flight != null) {
+                System.out.println("  Flight ID: " + flight.getFlightId());
+                System.out.println("  Date: " + flight.getFlightDate());
+                System.out.println("  Source: " + flight.getFrom());
+                System.out.println("  Destination: " + flight.getTo());
+                System.out.println("  Departure Time: " + flight.getDepartureTime());
+                System.out.println("  Arrival Time: " + flight.getArrivalTime());
+                System.out.println("  Duration: " + flight.getDuration() + " minutes");
+                System.out.println("  Stops: " + flight.getStops());
+                System.out.println("  Status: " + flight.getStatus());
+                System.out.println("  Check-In Time: " + flight.getCheckInTime());
+                System.out.println("  Layover: " + flight.getLayover());
+                System.out.println("  Layover Time: " + flight.getLayoverTime());
+            } else {
+                System.out.println("  Flight details not found.");
+            }
             System.out.println("===============================================");
         }
     }
@@ -245,29 +149,50 @@ public class ManageBooking {
             if (b.getBookingID() == bookingID) {
                 bookings.remove(b);
                 System.out.println("Booking with ID " + bookingID + " canceled.");
-                // Update bookings.txt file to remove the canceled booking
-                try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("data/bookings.txt"))) {
+                try (java.io.BufferedWriter writer = new java.io.BufferedWriter(
+                        new java.io.FileWriter("data/bookings.txt"))) {
                     for (Booking booking : bookings) {
-                        StringBuilder flightInfoBuilder = new StringBuilder();
-                        flightInfoBuilder.append("FlightID: ").append(booking.getFlightID());
-                        flightInfoBuilder.append(", Class: ").append(booking.getTravelClass());
-                        flightInfoBuilder.append(", Tickets: 1"); // Assuming 1 ticket per booking for simplicity
                         String line = String.join(", ",
                                 booking.getPassengerId(),
                                 booking.getFirstName(),
                                 booking.getLastName(),
                                 booking.getDateOfBirth(),
-                                booking.getNationality(),
                                 booking.getPhoneNo(),
                                 booking.getEmail(),
-                                flightInfoBuilder.toString()
-                        );
+                                booking.getNationality(),
+                                String.valueOf(booking.getFlightID()),
+                                booking.getBookingDate(),
+                                booking.getSeatNumber(),
+                                booking.getTravelClass(),
+                                booking.getPaymentStatus(),
+                                String.valueOf(booking.getPrice()));
                         writer.write(line);
                         writer.newLine();
                     }
                 } catch (Exception e) {
                     System.out.println("Error updating bookings file: " + e.getMessage());
                 }
+
+                try {
+                    Map<Integer, char[][]> flightSeatMap = seatService.loadSeatBookings();
+                    char[][] seatMap = flightSeatMap.get(b.getFlightID());
+                    if (seatMap != null) {
+                        String seatNumber = b.getSeatNumber();
+                        if (seatNumber != null && !seatNumber.isEmpty()) {
+                            int row = Integer.parseInt(seatNumber.substring(0, seatNumber.length() - 1)) - 1;
+                            int col = seatNumber.charAt(seatNumber.length() - 1) - 'A';
+                            if (row >= 0 && row < seatMap.length && col >= 0 && col < seatMap[0].length) {
+                                seatMap[row][col] = 'O'; // Mark seat as unfilled
+                                seatService.saveSeatBookings(b.getFlightID(), seatMap);
+                                System.out.println(
+                                        "Seat " + seatNumber + " marked as unfilled for flight " + b.getFlightID());
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error updating seat bookings: " + e.getMessage());
+                }
+
                 return true;
             }
         }

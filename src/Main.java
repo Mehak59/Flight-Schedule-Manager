@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-import models.Booking;
 import models.Flight;
 import models.Passenger;
 import services.Bookticket;

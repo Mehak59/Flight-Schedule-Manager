@@ -296,10 +296,8 @@ public class Main {
             case "2":
                 cancelBooking(scanner, bookingService);
                 break;
+
             case "3":
-                makePayment(scanner, bookingService);
-                break;
-            case "4":
                 menuStack.pop();
                 break;
             default:
@@ -329,54 +327,6 @@ public class Main {
                 System.out.println("Booking canceled successfully.");
             } else {
                 System.out.println("Booking not found or could not be canceled.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a numeric Booking ID.");
-        }
-    }
-
-    private static void makePayment(Scanner scanner, ManageBooking bookingService) {
-        if (loggedInPassenger == null) {
-            System.out.println("You must be logged in to make a payment.");
-            return;
-        }
-        try {
-            System.out.print("Enter Booking ID to make payment for: ");
-            int bookingID = Integer.parseInt(scanner.nextLine());
-
-            // Get current bookings of the user
-            LinkedList<Booking> bookings = bookingService.getBookingsByPassenger(loggedInPassenger.getPassengerId());
-            Booking targetBooking = null;
-            for (Booking b : bookings) {
-                if (b.getBookingID() == bookingID) {
-                    targetBooking = b;
-                    break;
-                }
-            }
-            if (targetBooking == null) {
-                System.out.println("Booking not found.");
-                return;
-            }
-
-            String currentStatus = targetBooking.getPaymentStatus();
-            if ("Paid".equalsIgnoreCase(currentStatus)) {
-                System.out.println("Payment is already done for this booking.");
-                return;
-            } else if ("Pending".equalsIgnoreCase(currentStatus)) {
-                System.out.print("Payment is pending. Do you want to make the payment now? (yes/no): ");
-                String confirm = scanner.nextLine();
-                if ("yes".equalsIgnoreCase(confirm)) {
-                    boolean success = bookingService.updatePaymentStatus(bookingID, "Paid");
-                    if (success) {
-                        System.out.println("Payment done successfully.");
-                    } else {
-                        System.out.println("Failed to update payment status.");
-                    }
-                } else {
-                    System.out.println("Payment not made.");
-                }
-            } else {
-                System.out.println("Unknown payment status: " + currentStatus);
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a numeric Booking ID.");

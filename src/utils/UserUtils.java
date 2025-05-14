@@ -51,11 +51,12 @@ public class UserUtils {
         return dateOfBirth != null && dateOfBirth.matches("\\d{4}-\\d{2}-\\d{2}");
     }
 
-    public static boolean userExists(Map<Passenger, String> users, String email) {
+    public static boolean userExists(Map<Passenger, String> users, String email, String passengerId) {
         for (Passenger passenger : users.keySet()) {
-            if (passenger.getEmail().equals(email)) {
+            if (passenger.getEmail().equals(email) || passenger.getPassengerId().equals(passengerId)) {
                 return true;
             }
+
         }
         return false;
     }

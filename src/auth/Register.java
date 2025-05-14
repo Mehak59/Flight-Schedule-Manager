@@ -20,7 +20,7 @@ public class Register {
         }
         Map<Passenger, String> users = UserUtils.loadUsers(USER_FILE);
 
-        if (UserUtils.userExists(users, passenger.getEmail())) {
+        if (UserUtils.userExists(users, passenger.getEmail(), passenger.getPassengerId())) {
             System.out.println("User already exists.");
             return false;
         }

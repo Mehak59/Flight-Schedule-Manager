@@ -1,2 +1,3 @@
 101,X,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O
 105,O,O,O,O,O,O,O,O,O,O,O,O,O,O,X,O,O,O,O,O,O,O,O,O
+106,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O

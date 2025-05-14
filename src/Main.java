@@ -16,7 +16,6 @@ import services.ManageBooking;
 import services.ProfileSettings;
 import services.SeatService;
 import services.TicketPrinter;
-
 import java.util.Deque;
 import java.util.ArrayDeque;
 
@@ -150,11 +149,7 @@ public class Main {
                     Flight flight = flightService.getFlightById(flightId);
                     if (flight != null) {
                         flightService.displayFlightDetails(flight);
-                        System.out.println("\n---------------------Prices for this flight------------------------");
-                        System.out.printf("Economy: Rs.%.2f%n", flight.getPriceEconomy());
-                        System.out.printf("Business: Rs.%.2f%n", flight.getPriceBusiness());
-                        System.out.printf("First: Rs.%.2f%n", flight.getPriceFirst());
-                        System.out.println("-------------------------------------------------------------------\n");
+                        
                         System.out.print("Do you want to book tickets for this flight? (yes/no): ");
                         String bookResponse = scanner.nextLine().trim().toLowerCase();
                         if (bookResponse.equals("yes") || bookResponse.equals("y")) {

@@ -5,18 +5,18 @@ import models.Airport;
 import utils.FlightUtils;
 import utils.AirportUtils;
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
 public class FlightService {
-    private LinkedList<Flight> flights;
+    private List<Flight> flights;
     private List<Airport> airports;
     private Map<String, Airport> locationToAirportMap;
 
     public FlightService() {
-        this.flights = new LinkedList<>();
+        this.flights = new ArrayList<>();
         this.flights.addAll(FlightUtils.loadFlights("data/flights.txt"));
         this.airports = AirportUtils.loadAirports("data/airport.txt");
         this.locationToAirportMap = new HashMap<>();
@@ -31,7 +31,6 @@ public class FlightService {
             return;
         }
 
-        // Use a HashMap to store unique routes as keys
         java.util.Map<String, Boolean> uniqueRoutesMap = new java.util.HashMap<>();
 
         for (Flight f : flights) {
@@ -50,7 +49,7 @@ public class FlightService {
     }
 
     public void displayAvailableFlights(String source, String destination, LocalDate date) {
-        LinkedList<Flight> availableFlights = new LinkedList<>();
+        List<Flight> availableFlights = new ArrayList<>();
 
         for (Flight f : flights) {
             if (f.getFrom() != null && f.getTo() != null &&
@@ -135,6 +134,12 @@ public class FlightService {
         System.out.printf("Layover Airport  : %s%n", layoverAirport != null ? layoverAirport.getAirportName() : "N/A");
         System.out.printf("Layover Time     : %s%n", flight.getLayoverTime());
         System.out.println("-------------------------------------------------------------------");
+
+        System.out.println("\n---------------------Prices for this flight------------------------");
+        System.out.printf("Economy: Rs.%.2f%n", flight.getPriceEconomy());
+        System.out.printf("Business: Rs.%.2f%n", flight.getPriceBusiness());
+        System.out.printf("First: Rs.%.2f%n", flight.getPriceFirst());
+        System.out.println("-------------------------------------------------------------------\n");
 
     }
 

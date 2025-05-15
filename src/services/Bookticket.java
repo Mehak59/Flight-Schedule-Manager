@@ -2,7 +2,9 @@ package services;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import models.Booking;
 import models.Passenger;
@@ -113,7 +115,7 @@ public class Bookticket {
         }
     }
 
-    public void saveBookings(LinkedList<Passenger> passengers, String filePath, java.util.Queue<String> seatQueue,
+    public void saveBookings(LinkedList<Passenger> passengers, String filePath, Queue<String> seatQueue,
             int flightID, String travelClass, double price) {
         for (Passenger passenger : passengers) {
             String seatNumber = seatQueue.poll();
@@ -127,7 +129,7 @@ public class Bookticket {
                     passenger.getNationality(),
                     generateBookingID(),
                     flightID,
-                    java.time.LocalDate.now().toString(),
+                    LocalDate.now().toString(),
                     seatNumber,
                     travelClass,
                     price,
